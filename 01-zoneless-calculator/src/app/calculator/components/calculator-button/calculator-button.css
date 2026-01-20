@@ -7,3 +7,7 @@ button {
 .is-command {
   @apply bg-indigo-700 hover:opacity-20;
 }
+
+.is-pressed {
+  @apply bg-indigo-800 hover:opacity-20;
+}
