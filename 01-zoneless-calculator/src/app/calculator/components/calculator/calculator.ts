@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, viewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, viewChildren } from '@angular/core';
 import { CalculatorButton } from '../calculator-button/calculator-button';
+import { CalculatorService } from '@/calculator/services/calculator.service';
 
 @Component({
   selector: 'calculator',
@@ -13,20 +14,25 @@ import { CalculatorButton } from '../calculator-button/calculator-button';
 })
 export class Calculator {
   public calculatorButtons = viewChildren(CalculatorButton);
+  public resultText = computed(() => this.calculatorService.resultText());
+  public subResultText = computed(() => this.calculatorService.subResultText());
+  public lastOperator = computed(() => this.calculatorService.lastOperator());
 
-  handleClick(key: string) {
-    console.log({ key });
+  private calculatorService = inject(CalculatorService);
+
+  public handleClick(key: string) {
+    this.calculatorService.constructNumber(key);
   }
 
   // Old way with host listener
   // @HostListener('document:keyup', ['$event'])
-  handleKeyboardEvent(event: KeyboardEvent) {
+  public handleKeyboardEvent(event: KeyboardEvent) {
     const keyEquivalents: Record<string, string> = {
       Escape: 'C',
       Clear: 'C',
       '*': 'x',
       '/': '÷',
-      Enter: '='
+      Enter: '=',
     };
     const key = event.key;
     const keyValue = keyEquivalents[key] ?? key;
