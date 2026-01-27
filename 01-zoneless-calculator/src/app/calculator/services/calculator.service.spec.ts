@@ -7,6 +7,8 @@ describe('CalculatorService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(CalculatorService);
+    // Clear spies
+    vi.resetAllMocks();
   });
 
   it('should be created', () => {
@@ -93,7 +95,7 @@ describe('CalculatorService', () => {
     service.constructNumber('2');
     service.constructNumber('.');
     service.constructNumber('5');
-    
+
     expect(service.resultText()).toBe('12.5');
     service.constructNumber('.');
     expect(service.resultText()).toBe('12.5');
@@ -101,9 +103,9 @@ describe('CalculatorService', () => {
 
   it('should handle decimal point starting with 0', () => {
     service.constructNumber('.');
-    expect(service.resultText()).toBe('0.')
+    expect(service.resultText()).toBe('0.');
     service.constructNumber('.');
-    expect(service.resultText()).toBe('0.')
+    expect(service.resultText()).toBe('0.');
   });
 
   it('should handle sign change +/-', () => {
@@ -113,7 +115,7 @@ describe('CalculatorService', () => {
     service.constructNumber('+/-');
     expect(service.resultText()).toBe('15');
   });
-  
+
   it('should handle backspace', () => {
     service.resultText.set('1515');
     service.constructNumber('Backspace');
@@ -123,7 +125,7 @@ describe('CalculatorService', () => {
     service.constructNumber('Backspace');
     expect(service.resultText()).toBe('0');
   });
-  
+
   it('should handle backspace with negative numbers', () => {
     service.resultText.set('-15');
     service.constructNumber('Backspace');
@@ -133,15 +135,24 @@ describe('CalculatorService', () => {
   });
 
   it('should handle max length', () => {
+    const consoleSpy = vi.spyOn(console, 'log');
+    consoleSpy.mockImplementation(() => {});
+
     service.resultText.set('1234567891');
     service.constructNumber('1');
     expect(service.resultText()).toBe('1234567891');
+    expect(consoleSpy).toHaveBeenCalled();
   });
 
   it('should handle invalid input', () => {
+    const consoleSpy = vi.spyOn(console, 'log');
+    consoleSpy.mockImplementation(() => {});
+    const inputValue = 'D';
+
     service.resultText.set('125');
-    service.constructNumber('D');
+    service.constructNumber(inputValue);
 
     expect(service.resultText()).toBe('125');
+    expect(consoleSpy).toHaveBeenCalledWith('Invalid input', inputValue);
   });
 });

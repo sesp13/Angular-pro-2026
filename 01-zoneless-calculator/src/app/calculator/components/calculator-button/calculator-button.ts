@@ -34,9 +34,10 @@ export class CalculatorButton {
     transform: (value: boolean | string) => (typeof value === 'string' ? value === '' : value),
   });
 
-  // @HostBinding('class.w-2/4') get doublesizeStyle() {
-  //   return this.isDoubleSize();
-  // }
+  // Other host binding way
+  @HostBinding('class.is-command') get isCommandStyle() {
+    return this.isCommand();
+  }
 
   public handleClick() {
     if (!this.contentValue()?.nativeElement) {

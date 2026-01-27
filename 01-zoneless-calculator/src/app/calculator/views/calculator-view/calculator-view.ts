@@ -7,4 +7,4 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   templateUrl: './calculator-view.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class CalculatorView { }
+export default class CalculatorView {}
