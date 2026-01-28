@@ -1,5 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CalculatorButton } from './calculator-button';
+import { Component } from '@angular/core';
+
+@Component({
+  imports: [CalculatorButton],
+  template: `
+    <calculator-button>
+      <span class="projected-content">7</span>
+    </calculator-button>
+  `,
+})
+class TestHostComponent {}
 
 describe('CalculatorButton', () => {
   let component: CalculatorButton;
@@ -58,15 +69,31 @@ describe('CalculatorButton', () => {
     expect(spy).toHaveBeenCalledWith('9');
   });
 
-  it('should set isPressed to true and then false when keyboardPressedStyle is called with matching key', (done) => {
-    // todo:
+  it('should set isPressed to true and then false when keyboardPressedStyle is called with matching key', async (done) => {
+    component.contentValue()!.nativeElement.innerText = '9';
+    component.keyboardPressedStyle('9');
+    expect(component.isPressed()).toBe(true);
+
+    await new Promise((resolve) => {
+      setTimeout(() => {
+        expect(component.isPressed()).toBe(false);
+        resolve(true);
+      }, 101);
+    });
   });
 
   it('should NOT set isPressed if key does not match', () => {
-    // todo:
+    component.contentValue()!.nativeElement.innerText = '8';
+    component.keyboardPressedStyle('9');
+    expect(component.isPressed()).toBe(false);
   });
 
   it('should display projected content', () => {
-    // todo:
+    const fixtureHost = TestBed.createComponent(TestHostComponent);
+    fixtureHost.detectChanges();
+    const compiledHost = fixtureHost.nativeElement as HTMLElement;
+    
+    expect(compiledHost.querySelector('.projected-content')).toBeTruthy();
+    expect(compiledHost.textContent.trim()).toBe('7');
   });
 });
