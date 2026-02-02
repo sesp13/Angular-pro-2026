@@ -2,7 +2,12 @@
 <h2 class="text-xl">Página actual</h2>
 <hr class="my-2" />
 
-<app-pokemon-list></app-pokemon-list>
+<app-pokemon-list [pokemons]="pokemons()"></app-pokemon-list>
+<!-- @if(isLoading()) {
+<app-pokemon-list-skeleton></app-pokemon-list-skeleton>
+} @else {
+  <app-pokemon-list></app-pokemon-list>
+} -->
 
 <div class="flex justify-between">
   <button class="mt-2">Anteriores</button>
