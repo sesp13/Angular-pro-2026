@@ -1,9 +1,7 @@
 import {
-  ApplicationRef,
   ChangeDetectionStrategy,
   Component,
   inject,
-  OnDestroy,
   OnInit,
   signal,
 } from '@angular/core';
@@ -11,7 +9,10 @@ import { PokemonList } from '../../pokemons/components/pokemon-list/pokemon-list
 import { PokemonListSkeleton } from './ui/pokemon-list-skeleton/pokemon-list-skeleton';
 import { PokemonsService } from '../../pokemons/services/pokemons.service';
 import { SimplePokemon } from '../../pokemons/interfaces';
-
+import { ActivatedRoute, Router } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map, tap } from 'rxjs';
+import { Title } from '@angular/platform-browser';
 @Component({
   selector: 'app-pokemons-page',
   imports: [PokemonList, PokemonListSkeleton],
@@ -21,17 +22,40 @@ import { SimplePokemon } from '../../pokemons/interfaces';
 })
 export default class PokemonsPage implements OnInit {
   public pokemons = signal<SimplePokemon[]>([]);
-
   private pokemonService = inject(PokemonsService);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private title = inject(Title);
+
+  public currentPage = toSignal(
+    this.route.queryParamMap.pipe(
+      map((params) => params.get('page') ?? '1'),
+      map((page) => (isNaN(+page) ? 1 : +page)),
+      map((page) => Math.max(1, page)),
+    ),
+  );
 
   ngOnInit(): void {
+    console.log(this.currentPage());
     this.loadPokemons();
   }
 
   public loadPokemons(page = 0) {
-    this.pokemonService.loadPage(page).subscribe((pokemons) => {
-      this.pokemons.set(pokemons);
-    });
+    const pageToLoad = this.currentPage()! + page;
+
+    this.pokemonService
+      .loadPage(pageToLoad)
+      .pipe(
+        tap(() => {
+          this.router.navigate([], { queryParams: { page: pageToLoad } });
+        }),
+        tap(() => {
+          this.title.setTitle(`Pokemons SSR - Page ${pageToLoad}`);
+        }),
+      )
+      .subscribe((pokemons) => {
+        this.pokemons.set(pokemons);
+      });
   }
 
   // Stable app references and other stuff
