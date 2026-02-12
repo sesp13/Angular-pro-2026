@@ -11,12 +11,14 @@
   </div>
 
   <div class="mt-4 flex flex-col col-span-2">
-    <h3>Issues</h3>
-    issues list - spinner - no issues  
+    <a routerLink="/issue/123">Ir a issue 123</a>
   </div>
 
   <div>
-    <h3>Labels</h3>
+    @if (labelsQuery.isLoading()) {
+      <p>Estamos cargando ....</p>
+    } @else {
+      <app-issues-labels-selector [labels]="labelsQuery.data() ?? []"></app-issues-labels-selector>
+    }
   </div>
-
 </section>
