@@ -11,7 +11,15 @@
   </div>
 
   <div class="mt-4 flex flex-col col-span-2">
-    <a routerLink="/issue/123">Ir a issue 123</a>
+    @for (issue of issuesQuery.data(); track issue.id) {
+      <app-issue-item [issue]="issue"></app-issue-item>
+    } @empty {
+      @if (issuesQuery.isLoading()) {
+        <p>Cargando Issues</p>
+      } @else {
+        <p>No hay issues que mostrar</p>
+      }
+    }
   </div>
 
   <div>
