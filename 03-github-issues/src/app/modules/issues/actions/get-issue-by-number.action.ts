@@ -1,5 +1,4 @@
 import { sleep } from '@helpers/sleep';
-import { GithubLabel } from '../interfaces/github-label.interface';
 import { environment } from 'src/environments/environment';
 import { GithubIssue } from '../interfaces';
 
@@ -16,11 +15,11 @@ export const getIssueByNumber = async (issueNumber: string): Promise<GithubIssue
       },
     });
     if (!res.ok) {
-      throw 'Cant load issue';
+      throw `Cant load issue ${issueNumber}`;
     }
     const issue = (await res.json()) as GithubIssue;
     return issue;
   } catch (error) {
-    throw 'Cant load issue';
+    throw `Cant load issue ${issueNumber}`;
   }
 };
