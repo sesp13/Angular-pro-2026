@@ -1,0 +1,99 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "cli": {
+    "packageManager": "npm"
+  },
+  "newProjectRoot": "projects",
+  "projects": {
+    "my-sesp-sidebar": {
+      "projectType": "library",
+      "root": "projects/my-sesp-sidebar",
+      "sourceRoot": "projects/my-sesp-sidebar/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/my-sesp-sidebar/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/my-sesp-sidebar/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "projects/my-sesp-sidebar/tsconfig.spec.json"
+          }
+        }
+      }
+    },
+    "my-sesp-workspace-testbed": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "projects/my-sesp-workspace-testbed",
+      "sourceRoot": "projects/my-sesp-workspace-testbed/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "projects/my-sesp-workspace-testbed/src/main.ts",
+            "tsConfig": "projects/my-sesp-workspace-testbed/tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/my-sesp-workspace-testbed/public"
+              }
+            ],
+            "styles": [
+              "projects/my-sesp-workspace-testbed/src/styles.css"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "my-sesp-workspace-testbed:build:production"
+            },
+            "development": {
+              "buildTarget": "my-sesp-workspace-testbed:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test"
+        }
+      }
+    }
+  }
+}
