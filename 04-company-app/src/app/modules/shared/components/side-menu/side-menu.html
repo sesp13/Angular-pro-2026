@@ -4,9 +4,11 @@
   <div class="relative border-b border-white/20">
     <a class="flex items-center gap-4 py-6 px-8" href="#/">
       <h6
-        class="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-white"
+        class="block antialiased tracking-normal font-sans font-semibold leading-relaxed font-bold text-white text-2xl"
       >
-        Material Tailwind Dashboard
+        <!-- todo custom colors -->
+        <span class="text-blue-500">Mi paquete</span>
+        <span class="font-thin"> corp</span>
       </h6>
     </a>
     <button
@@ -31,9 +33,14 @@
   <div class="m-4">
     <ul class="mb-4 flex flex-col gap-1">
       <li>
-        <a aria-current="page" class="active" href="#">
+        <!-- middle none font-sans font-bold center transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 rounded-lg bg-gradient-to-tr from-blue-600 to-blue-400 text-white shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/40 active:opacity-[0.85] w-full flex items-center gap-4 px-4 capitalize -->
+        <a
+          routerLink="/"
+          routerLinkActive="bg-gradient-to-tr from-blue-600 to-blue-400 text-white shadow-md shadow-blue-500/20 active:opacity-[0.85] w-full flex items-center gap-4 px-4 capitalize"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
           <button
-            class="middle none font-sans font-bold center transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 rounded-lg bg-gradient-to-tr from-blue-600 to-blue-400 text-white shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/40 active:opacity-[0.85] w-full flex items-center gap-4 px-4 capitalize"
+            class="middle none font-sans font-bold center transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 rounded-lg text-white hover:bg-white/10 active:bg-white/30 w-full flex items-center gap-4 px-4 capitalize"
             type="button"
           >
             <svg
@@ -59,7 +66,11 @@
         </a>
       </li>
       <li>
-        <a class="" href="#">
+        <a
+          routerLink="/projects"
+          routerLinkActive="bg-gradient-to-tr from-blue-600 to-blue-400 text-white shadow-md shadow-blue-500/20 active:opacity-[0.85] w-full flex items-center gap-4 px-4 capitalize"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
           <button
             class="middle none font-sans font-bold center transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 rounded-lg text-white hover:bg-white/10 active:bg-white/30 w-full flex items-center gap-4 px-4 capitalize"
             type="button"
@@ -80,7 +91,7 @@
             <p
               class="block antialiased font-sans text-base leading-relaxed text-inherit font-medium capitalize"
             >
-              profile
+              projects
             </p>
           </button>
         </a>
